@@ -15,7 +15,6 @@ LIMIT 10;
 SELECT COUNT(DISTINCT title)
 FROM data_analyst_jobs
 WHERE location='TN' OR location ='KY';
-
 --Answer (17) & (21)
 
 -- 4.	How many postings in Tennessee have a star rating above 4?
@@ -45,7 +44,6 @@ ORDER BY avg_rating DESC
 -- 7.	Select unique job titles from the data_analyst_jobs table. How many are there?
 SELECT COUNT(DISTINCT title)
 FROM data_analyst_jobs
-
 --Answer (881)	
 
 -- 8.	How many unique job titles are there for California companies?
@@ -76,17 +74,32 @@ ORDER BY AVG(star_rating)DESC;
 
 -- 11.	Find all the job titles that contain the word ‘Analyst’. How many different job titles are there?
 
-SELECT title
+SELECT COUNT(DISTINCT title)
 FROM data_analyst_jobs
-WHERE title LIKE 'analyst%' --left off here and this is not accurate
+WHERE title LIKE '%_nalyst%'
+--Answer 757
 
 -- 12.	How many different job titles do not contain either the word ‘Analyst’ or the word ‘Analytics’? What word do these positions have in common?
 
-SELECT *
-FROM data_analyst_jobs;
+SELECT COUNT(DISTINCT title)
+FROM data_analyst_jobs
+WHERE title NOT LIKE '%_nalyst%'
+OR title NOT LIKE '%_nalytics%'	
+--Answer 802
 
 -- **BONUS:**
 -- You want to understand which jobs requiring SQL are hard to fill. Find the number of jobs by industry (domain) that require SQL and have been posted longer than 3 weeks. 
+SELECT *
+FROM data_analyst_jobs
+WHERE skill LIKE '%SQL%'
+AND domain IS NOT NULL
+AND days_since_posting >21
+GROUP BY domain
+ORDER BY days_since_posting DESC
+
+
+
 --  - Disregard any postings where the domain is NULL. 
+
 --  - Order your results so that the domain with the greatest number of `hard to fill` jobs is at the top. 
 --   - Which three industries are in the top 4 on this list? How many jobs have been listed for more than 3 weeks for each of the top 4?

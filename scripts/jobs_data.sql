@@ -89,17 +89,27 @@ OR title NOT LIKE '%_nalytics%'
 
 -- **BONUS:**
 -- You want to understand which jobs requiring SQL are hard to fill. Find the number of jobs by industry (domain) that require SQL and have been posted longer than 3 weeks. 
-SELECT *
+SELECT domain,AVG(days_since_posting)
 FROM data_analyst_jobs
 WHERE skill LIKE '%SQL%'
 AND domain IS NOT NULL
-AND days_since_posting >21
 GROUP BY domain
-ORDER BY days_since_posting DESC
+HAVING AVG(days_since_posting)>21
+ORDER BY AVG(days_since_posting) DESC
+LIMIT 4;
 
-
+--Answer "Organization" "Restaurants, Travel and LeisureConsulting and Business Services" "Pharmaceuticals""Transport and Freight"
 
 --  - Disregard any postings where the domain is NULL. 
+SELECT domain,AVG(days_since_posting),title
+FROM data_analyst_jobs
+WHERE skill LIKE '%SQL%'
+AND domain IS NOT NULL
+AND domain IN ('Organization','Restaurants, Travel and LeisureConsulting and Business Services', 'Pharmaceuticals','Transport and Freight')
+GROUP BY domain, title
+HAVING AVG(days_since_posting)>21
+ORDER BY AVG(days_since_posting) DESC;
 
 --  - Order your results so that the domain with the greatest number of `hard to fill` jobs is at the top. 
 --   - Which three industries are in the top 4 on this list? How many jobs have been listed for more than 3 weeks for each of the top 4?
+
